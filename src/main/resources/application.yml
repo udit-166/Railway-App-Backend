@@ -1,0 +1,40 @@
+server:
+  port: 8084
+  
+spring:
+  application:
+    name: API-GATEWAY
+
+  cloud:
+    gateway:
+      routes:
+      - id: RAILWAYUSERSERVICE
+        uri: lb://RAILWAYUSERSERVICE
+        predicates:
+          - Path= /auth/**,/users/**, /api/users/**,/
+        
+      - id: RAILWAY-HOTEL-SERVICE
+        uri: lb://RAILWAY-HOTEL-SERVICE
+        predicates:
+          - Path= /hotels/** 
+          
+      - id: RAILWAY-TRAIN-SERVICES
+        uri: lb://RAILWAY-TRAIN-SERVICES
+        predicates:
+          - Path= /api/railway/**, /railway/**
+      default-filters:
+        - DedupeResponseHeader=Access-Control-Allow-Credentials Access-Control-Allow-Origin
+      globalcors:
+        cors-configurations:
+          '[/**]':
+            allowedOrigins: "http://localhost:5173/"
+            allowedMethods: "*"
+            allowedHeaders: "*"
+eureka:
+  instance:
+    prefer-ip-address: true
+  client:
+    fetch-registry: true 
+    register-with-eureka: true
+    service-url:
+      defaultZone: http://localhost:8761/eureka
