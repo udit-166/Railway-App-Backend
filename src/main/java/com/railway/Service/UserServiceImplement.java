@@ -46,6 +46,16 @@ public class UserServiceImplement implements UserService {
 		
 		return  new org.springframework.security.core.userdetails.User(user.getEmail(),user.getPassword(),authorities);
 	}
+	
+	public UserDetails findUserByPhoneNumber(String phone_number) throws UsernameNotFoundException{
+		User user =  userRepository.findByPhone_number(phone_number);
+		if(user==null) {
+			throw new UsernameNotFoundException("user not found with email"+ phone_number);
+		}
+		List<GrantedAuthority> authorities = new ArrayList<>();
+		
+		return  new org.springframework.security.core.userdetails.User(user.getPhone_number(),user.getPassword(),authorities);
+	}
 
 	@Override
 	public User getUserProfile(String jwt){
@@ -65,7 +75,7 @@ public class UserServiceImplement implements UserService {
 	@Override
 	public void sendEmail(String subject, String message, String to) {
 		String from  = "uditshahi96@gmail.com";
-		// Variable for gmail
+		// Variable for sending the message in the app
 		
 		String host = "smtp.gmail.com";
 		//get the system properties
