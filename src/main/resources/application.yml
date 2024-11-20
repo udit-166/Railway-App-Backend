@@ -1,6 +1,7 @@
 server:
   port: 8088
   
+
   
 spring:
   application:
@@ -9,8 +10,7 @@ spring:
     url: jdbc:mysql://localhost:3306/reservation-user
     username: root
     password: PUS#16push4
-    driver-class-name: com.mysql.cj.jdbc.Driver
-    
+    driver-class-name: com.mysql.cj.jdbc.Driver  
   jpa:
     hibernate:
       ddl-auto: update
@@ -19,7 +19,12 @@ spring:
     properties:
       hibernate:
         dialect: org.hibernate.dialect.MySQL8Dialect
-
+  data:
+    redis:
+      host: redis-16425.c277.us-east-1-3.ec2.redns.redis-cloud.com
+      port: 16425
+      password: GMiRBkJCq6AUQtuTaQCJKMvzYUmdc7RV
+      username: default
 #  config:
 #    import: configserver:http://localhost:8085    
 eureka:

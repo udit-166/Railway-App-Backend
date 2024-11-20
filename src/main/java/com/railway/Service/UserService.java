@@ -18,5 +18,16 @@ public interface UserService {
 	
 	public void sendSMS(Integer message,String number);
 	
+	public String generateOtp(String phoneNumber);
+	
+	public String getOtp(String phoneNumber);
+	
+	public boolean validateOtp(String phoneNumber, String otp);
+	
+	public void deleteOtp(String phoneNumber);
+	
+	
+	
+	
 
 }

@@ -159,17 +159,49 @@ public class AuthController {
 		 return new ResponseEntity<>(auth,HttpStatus.OK);
 		  }
 		  else {
-			  Authentication authentication = authenticationPhoneNumber(phone_number);
-			  SecurityContextHolder.getContext().setAuthentication(authentication);
-			  String token  = jwtProvider.generateToken(authentication);
-			  AuthResponse auth = new AuthResponse();
-			  auth.setMessage("Login Successfull");
-			  auth.setJwt(token);
-			  auth.setStatus(true);
-			  return new ResponseEntity<>(auth, HttpStatus.OK);
+			  String otp = serviceImplement.generateOtp(phone_number);
+			  
+			  System.out.println("Generated OTP for " + phone_number + ": " + otp);
+
+			    AuthResponse response = new AuthResponse();
+			    response.setMessage("OTP sent to your phone number.");
+			    response.setStatus(true);
+			  
+//			  
+			  return new ResponseEntity<>(response, HttpStatus.OK);
 		  }
 	}
 	
+	@PostMapping("/login/verify-otp")
+	public ResponseEntity<AuthResponse> verifyOtp(@RequestBody OTPVerificationRequest otpRequest) {
+	    String phoneNumber = otpRequest.getPhone_number();
+	    String otp = otpRequest.getOtp();
+
+	    // Validate OTP
+	    if (!serviceImplement.validateOtp(phoneNumber, otp)) {
+	        throw new BadCredentialsException("Invalid or expired OTP.");
+	    }
+
+	    // OTP is valid; delete it from Redis
+	    serviceImplement.deleteOtp(phoneNumber);
+
+	    // Fetch user details
+	    User user = userRepository.findByPhone_number(phoneNumber);
+	    if (user == null) {
+	        throw new BadCredentialsException("User not found.");
+	    }
+
+	  
+	    Authentication authentication = authenticationPhoneNumber(phoneNumber);
+		  SecurityContextHolder.getContext().setAuthentication(authentication);
+		  String token  = jwtProvider.generateToken(authentication);
+		  AuthResponse auth = new AuthResponse();
+		  auth.setMessage("Login Successfull");
+		  auth.setJwt(token);
+		  auth.setStatus(true);
+
+	    return new ResponseEntity<>(auth, HttpStatus.OK);
+	}
 	
 	private Authentication authenticate(String username, String password) {
 		UserDetails userDetails = serviceImplement.findUserByEmail(username);

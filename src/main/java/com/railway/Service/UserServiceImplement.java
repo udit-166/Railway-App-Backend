@@ -10,6 +10,8 @@ import java.util.ArrayList;
 import java.util.Collection;
 import java.util.List;
 import java.util.Properties;
+import java.util.Random;
+import java.util.concurrent.TimeUnit;
 
 import javax.mail.Authenticator;
 import javax.mail.PasswordAuthentication;
@@ -19,6 +21,7 @@ import javax.mail.internet.InternetAddress;
 import javax.mail.internet.MimeMessage;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.data.redis.core.StringRedisTemplate;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -35,7 +38,12 @@ public class UserServiceImplement implements UserService {
 	private UserRepository userRepository;
 	
 	@Autowired
+	private StringRedisTemplate redisTemplate;
+	
+	@Autowired
 	private JwtProvider jwtProvider;
+	
+	private static final long OTP_EXPIRY_MINUTES = 5;
 
 	public UserDetails findUserByEmail(String email) throws UsernameNotFoundException{
 		User user =  userRepository.findByEmail(email);
@@ -189,6 +197,32 @@ public class UserServiceImplement implements UserService {
 		}
 		
 	}
+
+	@Override
+	public String generateOtp(String phoneNumber) {
+		String otp = String.format("%04d", new Random().nextInt(10000)); // 4-digit OTP
+        redisTemplate.opsForValue().set(phoneNumber, otp, OTP_EXPIRY_MINUTES, TimeUnit.MINUTES);
+        return otp;
+	}
+
+	@Override
+	public String getOtp(String phoneNumber) {
+		// TODO Auto-generated method stub
+		return redisTemplate.opsForValue().get(phoneNumber);
+	}
+
+	@Override
+	public boolean validateOtp(String phoneNumber, String otp) {
+		String storedOtp = redisTemplate.opsForValue().get(phoneNumber);
+        return storedOtp != null && storedOtp.equals(otp);
+	}
+
+	@Override
+	public void deleteOtp(String phoneNumber) {
+		redisTemplate.delete(phoneNumber);
+		
+	}
+	
 	
 	
 }
