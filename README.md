@@ -7,6 +7,7 @@ This repository contains the backend services for the **Railway App System**, a 
 ## Features
 1. **User Registration:**  
    - Supports email and SMS-based OTP verification for secure user registration.
+   - **Redis Integration:** OTPs are stored temporarily in Redis for efficient and secure retrieval.  
 2. **Train List:**  
    - Fetch and display train schedules and availability information.
 3. **Ticket Booking:**  
@@ -27,6 +28,7 @@ This backend application comprises several microservices to promote scalability 
 
 ### 1. User Service
 - Manages user authentication, registration, profile updates, and OTP functionalities.
+- OTPs are stored in **Redis**, ensuring fast read/write operations and secure expiration policies.
 
 ### 2. Train Service
 - Handles train-related operations like fetching schedules and availability.
@@ -42,9 +44,10 @@ This backend application comprises several microservices to promote scalability 
 
 ## Additional Services
 To enhance the efficiency of the backend system, we use the following supportive services:  
-1. **API Gateway:** Facilitates secure and centralized routing of service requests.  
-2. **Service Registry (Eureka):** Handles service discovery and registration.  
-3. **Config Server:** Manages centralized configurations for all microservices.
+1. **Redis:** For storing OTPs securely with expiration to ensure time-bound access.  
+2. **API Gateway:** Facilitates secure and centralized routing of service requests.  
+3. **Service Registry (Eureka):** Handles service discovery and registration.  
+4. **Config Server:** Manages centralized configurations for all microservices.
 
 ---
 
@@ -53,8 +56,9 @@ To enhance the efficiency of the backend system, we use the following supportive
   - Java (Spring Boot) for core backend services.  
   - Python (Django) for the AI-powered Chatbot.
 
-- **Database:**  
-  - **MySQL** as the primary relational database for managing data storage.
+- **Databases:**  
+  - **MySQL** as the primary relational database for managing data storage.  
+  - **Redis** for fast and secure OTP storage.
 
 - **AI and Machine Learning:**  
   - The chatbot leverages **Deep Neural Networks (DNN)** for predictive model training.
@@ -69,10 +73,10 @@ To enhance the efficiency of the backend system, we use the following supportive
    - Utilizes **Spring Boot (Java)** and **Django (Python)** in the same application for domain-specific tasks.
 
 3. **Polyglot Persistence:**  
-   - Support for multiple databases ensures optimized storage solutions.
+   - Combines **MySQL** for long-term data storage and **Redis** for short-lived OTPs.
 
 4. **High Security:**  
-   - Implements OTP-based verification for secure user authentication and ensures secure payment gateways.
+   - Implements Redis for temporary and secure OTP management, alongside OTP-based authentication and payment gateway security.
 
 ---
 
