@@ -1,27 +1,29 @@
 package com.railway.model;
 
+import jakarta.persistence.AttributeOverrides;
 import jakarta.persistence.Embedded;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
-
+import jakarta.persistence.Table;
 
 @Entity
-public class Station {
+@Table(name = "train")
+public class Trains {
 	
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
 	private Long id;
 	
 	@Embedded
-	private StationGeometry geometry;
+	private Geometry geometry;
 	
 	
 	private String type;
 	
 	@Embedded
-	private StationProperties properties;
+	private Properties properties;
 
 	public Long getId() {
 		return id;
@@ -31,11 +33,11 @@ public class Station {
 		this.id = id;
 	}
 
-	public StationGeometry getGeometry() {
+	public Geometry getGeometry() {
 		return geometry;
 	}
 
-	public void setGeometry(StationGeometry geometry) {
+	public void setGeometry(Geometry geometry) {
 		this.geometry = geometry;
 	}
 
@@ -47,15 +49,15 @@ public class Station {
 		this.type = type;
 	}
 
-	public StationProperties getProperties() {
+	public Properties getProperties() {
 		return properties;
 	}
 
-	public void setProperties(StationProperties properties) {
+	public void setProperties(Properties properties) {
 		this.properties = properties;
 	}
 
-	public Station(Long id, StationGeometry geometry, String type, StationProperties properties) {
+	public Trains(Long id, Geometry geometry, String type, Properties properties) {
 		super();
 		this.id = id;
 		this.geometry = geometry;
@@ -63,14 +65,14 @@ public class Station {
 		this.properties = properties;
 	}
 
-	public Station() {
+	public Trains() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
-	
-	
-	
-	
 
+	@Override
+	public String toString() {
+		return "Trains [id=" + id + ", geometry=" + geometry + ", type=" + type + ", properties=" + properties + "]";
+	}
+	
 }

@@ -11,35 +11,34 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
-import com.railway.Service.TrainService;
+import com.railway.Service.StationService;
+import com.railway.model.Station;
 import com.railway.model.Trains;
 import com.railway.reponse.AuthResponse;
-
-
+import com.railway.repository.StationRepository;
 
 @RestController
 @RequestMapping("/api/railway")
-public class MainController {
+public class StationController {
+	
 	
 	@Autowired
-	private TrainService trainService;
+	private StationService stationService;
 	
-	
-	@PostMapping("/createTrain")
-	public ResponseEntity<AuthResponse> createTrainDetails(@RequestBody String requestBody) throws IOException {
+	@PostMapping("/addStation")
+	public ResponseEntity<AuthResponse> addStationDetails(@RequestBody String requestBody) throws IOException {
 	    // Sanitize the input JSON
 	    String sanitizedInput = requestBody.replace("\u00A0", " ");
 	    
 	    // Convert sanitized JSON back to Trains array
 	    ObjectMapper mapper = new ObjectMapper();
-	    Trains[] trains = mapper.readValue(sanitizedInput, Trains[].class);
+	    Station[] stations = mapper.readValue(sanitizedInput, Station[].class);
 	    
-	    for (Trains train : trains) {
-	        trainService.createTrain(train);
+	    for (Station station : stations) {
+	        stationService.addStation(station);
 	    }
 	    
 	    AuthResponse res = new AuthResponse();
@@ -48,23 +47,13 @@ public class MainController {
 	    return new ResponseEntity<>(res, HttpStatus.OK);
 	}
 	
-	@GetMapping("/number/{trainNumber}")
-    public ResponseEntity<Trains> getTrainByNumber(@PathVariable String trainNumber) {
-        Trains train = trainService.getTrainByNumber(trainNumber);
-        if (train != null) {
-            return ResponseEntity.ok(train);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
 	
-	@GetMapping("/name/{trainName}")
-    public ResponseEntity<List<Trains>> getTrainsByName(@PathVariable String trainName) {
-        List<Trains> trains = trainService.getTrainByName(trainName);
-        if (!trains.isEmpty()) {
-            return ResponseEntity.ok(trains);
-        } else {
-            return ResponseEntity.notFound().build();
-        }
-    }
+//	@GetMapping("/station/name/{name}")
+//    public ResponseEntity<List<Station>> getStationsByName(@PathVariable String name) {
+//        List<Station> stations = stationService.findStationsByName(name);
+//        if (stations.isEmpty()) {
+//            return ResponseEntity.noContent().build(); // No stations found
+//        }
+//        return ResponseEntity.ok(stations); // Stations found
+//    }
 }
