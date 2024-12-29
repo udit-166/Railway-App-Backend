@@ -10,4 +10,6 @@ public interface TrainService {
 	 public Trains getTrainByNumber(String trainNumber);
 	 
 	 public List<Trains> getTrainByName(String trainName);
+	 
+	 public List<Trains> getTrainsBetweenStations(String startStationCode, String endStationCode);
 }

@@ -46,4 +46,13 @@ public class StationServiceImpl implements StationService{
 		
 	}
 
+
+
+
+
+	@Override
+	public List<Station> getStationsBySearchTerm(String searchTerm) {
+        return stationRepository.findByCodeOrNameContaining(searchTerm);
+    }
+
 }

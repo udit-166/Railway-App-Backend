@@ -11,5 +11,5 @@ public interface StationService {
 	public void addStation(Station station);
 	 
 	 
-//	 public List<Station> findStationsByName(String name);
+	public List<Station> getStationsBySearchTerm(String searchTerm);
 }

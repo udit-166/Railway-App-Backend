@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
@@ -48,12 +49,10 @@ public class StationController {
 	}
 	
 	
-//	@GetMapping("/station/name/{name}")
-//    public ResponseEntity<List<Station>> getStationsByName(@PathVariable String name) {
-//        List<Station> stations = stationService.findStationsByName(name);
-//        if (stations.isEmpty()) {
-//            return ResponseEntity.noContent().build(); // No stations found
-//        }
-//        return ResponseEntity.ok(stations); // Stations found
-//    }
+	@GetMapping("/stations/search")
+    public ResponseEntity<List<Station>> searchStations(
+            @RequestParam String searchTerm) {
+        List<Station> stations = stationService.getStationsBySearchTerm(searchTerm);
+        return ResponseEntity.ok(stations);
+    }
 }

@@ -67,4 +67,12 @@ public class MainController {
             return ResponseEntity.notFound().build();
         }
     }
+	
+	 @GetMapping("/trains/between")
+	    public ResponseEntity<List<Trains>> getTrainsBetweenStations(
+	            @RequestParam String startStationCode,
+	            @RequestParam String endStationCode) {
+	        List<Trains> trains = trainService.getTrainsBetweenStations(startStationCode, endStationCode);
+	        return ResponseEntity.ok(trains);
+	    }
 }
