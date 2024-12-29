@@ -18,6 +18,15 @@ spring:
         predicates:
           - Path= /hotels/** 
           
+      - id: CHATBOT-SERVICE
+        uri: lb://CHATBOT-SERVICE
+        predicates:
+          - Path= /api/chatbot/**
+      - id: RAILWAY-BOOKING-AND-PAYMENT-SERVICE
+        uri: lb://RAILWAY-BOOKING-AND-PAYMENT-SERVICE
+        predicates:
+          - Path= /api/booking/**, /api/payment/**
+         
       - id: RAILWAY-TRAIN-SERVICES
         uri: lb://RAILWAY-TRAIN-SERVICES
         predicates:
@@ -27,7 +36,7 @@ spring:
       globalcors:
         cors-configurations:
           '[/**]':
-            allowedOrigins: "http://localhost:5173/"
+            allowedOrigins: "*"
             allowedMethods: "*"
             allowedHeaders: "*"
 eureka:
