@@ -6,7 +6,7 @@ import com.registering.entity.BookingTrain;
 
 public interface BookingTicketServcie {
 	
-	public void bookTrain(BookingTrain ticket);
+	public void bookTrain(BookingTrain ticket,String token);
 	
 	public Order createOrder(int amount) throws RazorpayException; 
 }

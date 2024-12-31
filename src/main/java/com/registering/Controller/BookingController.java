@@ -26,11 +26,14 @@ public class BookingController {
 	@Autowired
 	private BookingTicketServcie bookingServcie;
 	
+	
+	
 	@PostMapping("/book")
     public ResponseEntity<AuthResponse> bookTrain(@RequestBody BookingTrain bookingRequest) {
         try {
             // Call service to handle booking
-            bookingServcie.bookTrain(bookingRequest);
+        	String token = "Bearer eyJhbGciOiJIUzUxMiJ9.eyJpc3MiOiJSYWlsd2F5IFJlc2VydmF0aW9uIHByb2plY3QiLCJpYXQiOjE3MzU1ODUyNzEsImV4cCI6MTczNTY3MTY3MSwiZW1haWwiOiJ1ZGhpc2hhaGkxNjA2QGdtYWlsLmNvbSJ9.OEp5cI1JBLUtFcLvnRb8dBcEhCOj11ePtOTS-wzx46tQzkFm2vgn8hROMU6ZT88nbkk-eZhaehtlfW97ctgz3Q";
+            bookingServcie.bookTrain(bookingRequest,token);
             AuthResponse res = new AuthResponse();
             res.setMsg("The data is uploaded successfully!!");
             res.setCode("200");
@@ -58,4 +61,5 @@ public class BookingController {
                     .body(null);
         }
     }
+	
 }
